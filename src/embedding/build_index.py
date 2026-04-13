@@ -3,6 +3,7 @@ from sentence_transformers import SentenceTransformer
 import numpy as np
 import faiss
 import pickle
+from pathlib import Path
 
 def load_jobs(db_path: str):
     """
@@ -54,5 +55,11 @@ def main():
     model = load_embedding_model()
     embeddings = encode_jobs(model, descriptions)
     index = build_faiss_index(embeddings)
-    save_index(index, "embeddings/faiss_index.bin")
-    save_mapping(job_ids, "embeddings/id_mapping.pkl")
+
+
+    BASE_DIR = Path(__file__).resolve().parents[2]
+    index_path = BASE_DIR / "embeddings" / "faiss_index.bin"
+    mapping_path = BASE_DIR / "embeddings" / "id_mapping.pkl"
+
+    save_index(index, index_path)
+    save_mapping(job_ids, mapping_path)
