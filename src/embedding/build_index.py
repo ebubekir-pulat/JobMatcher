@@ -56,7 +56,6 @@ def main():
     embeddings = encode_jobs(model, descriptions)
     index = build_faiss_index(embeddings)
 
-
     BASE_DIR = Path(__file__).resolve().parents[2]
     index_path = BASE_DIR / "embeddings" / "faiss_index.bin"
     mapping_path = BASE_DIR / "embeddings" / "id_mapping.pkl"
