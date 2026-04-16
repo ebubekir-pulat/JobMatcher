@@ -4,6 +4,7 @@ import numpy as np
 import faiss
 import pickle
 from pathlib import Path
+import json
 
 def load_jobs(db_path: str):
     """
@@ -18,6 +19,19 @@ def load_jobs(db_path: str):
     job_ids = [row[0] for row in rows]
     descriptions = [row[1] for row in rows]
     conn.close()
+
+    # Writing jobs to JSON cache
+    jobs_cache = {
+        str(job_id): {"description": descr}
+        for job_id, descr in zip(job_ids, descriptions)
+    }
+    
+    BASE_DIR = Path(__file__).resolve().parents[2]
+    cache_path = BASE_DIR / "embeddings" / "job_cache.json"
+
+    with open(cache_path, "w") as f:
+        json.dump(jobs_cache, f, indent=4)
+
     return job_ids, descriptions
 
 def load_embedding_model():
