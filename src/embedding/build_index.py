@@ -3,8 +3,8 @@ from sentence_transformers import SentenceTransformer
 import numpy as np
 import faiss
 import pickle
-from pathlib import Path
 import json
+import config
 
 def load_jobs(db_path: str):
     """
@@ -14,7 +14,7 @@ def load_jobs(db_path: str):
     """
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
-    res = cursor.execute("SELECT job_id, description FROM jobs")
+    res = cursor.execute("SELECT job_id, description FROM jobs ORDER BY job_id")
     rows = res.fetchall()
     job_ids = [row[0] for row in rows]
     descriptions = [row[1] for row in rows]
@@ -25,11 +25,8 @@ def load_jobs(db_path: str):
         str(job_id): {"description": descr}
         for job_id, descr in zip(job_ids, descriptions)
     }
-    
-    BASE_DIR = Path(__file__).resolve().parents[2]
-    cache_path = BASE_DIR / "embeddings" / "job_cache.json"
 
-    with open(cache_path, "w") as f:
+    with open(config.CACHE_PATH, "w") as f:
         json.dump(jobs_cache, f, indent=4)
 
     return job_ids, descriptions
@@ -65,14 +62,10 @@ def save_mapping(job_ids: list, path: str):
         pickle.dump(job_ids, f)
 
 def main():
-    job_ids, descriptions = load_jobs("jobs.db")
+    job_ids, descriptions = load_jobs(config.DB_PATH)
     model = load_embedding_model()
     embeddings = encode_jobs(model, descriptions)
     index = build_faiss_index(embeddings)
 
-    BASE_DIR = Path(__file__).resolve().parents[2]
-    index_path = BASE_DIR / "embeddings" / "faiss_index.bin"
-    mapping_path = BASE_DIR / "embeddings" / "id_mapping.pkl"
-
-    save_index(index, index_path)
-    save_mapping(job_ids, mapping_path)
+    save_index(index, config.INDEX_PATH)
+    save_mapping(job_ids, config.MAPPING_PATH)
