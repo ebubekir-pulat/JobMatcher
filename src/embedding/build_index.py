@@ -4,7 +4,7 @@ import numpy as np
 import faiss
 import pickle
 import json
-import config
+from src import config
 
 def load_jobs(db_path: str):
     """
