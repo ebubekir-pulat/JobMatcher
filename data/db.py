@@ -1,7 +1,8 @@
 import sqlite3
 from datasets import load_dataset
 
-db_file = "jobs.db"
+db_file = "data/jobs.db"
+
 try:
     conn = sqlite3.connect(db_file)
     print("Jobs Database Built")
@@ -10,7 +11,9 @@ except:
 
 jobs_ds_whole = load_dataset("datastax/linkedin_job_listings", split="train")
 dataset_size = 20
-jobs_ds = jobs_ds_whole.select_columns(["job_id", "description"])[:dataset_size]
+
+jobs_ds = jobs_ds_whole.select(range(dataset_size))
+jobs_ds = jobs_ds.select_columns(["job_id", "description"])
 
 cursor = conn.cursor()
 cursor.execute("CREATE TABLE IF NOT EXISTS jobs(job_id TEXT PRIMARY KEY, description TEXT)")
