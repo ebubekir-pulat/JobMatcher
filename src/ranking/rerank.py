@@ -12,15 +12,17 @@ def load_job_cache(path: str):
 
 def score_pair(model, resume_text, job_description):
     score = model.predict([(resume_text, job_description)])
+    print("Pair Score: ", score)
     return score[0]
 
-def rerank_jobs(resume_text: str, retrieved_jobs, job_cache, model):
+def rerank_jobs(resume_text: str, recommended_jobs, job_cache, model, top_n):
     scored_jobs = []
 
-    for job in retrieved_jobs:
+    for job in recommended_jobs:
         job_descr = job_cache[job["job_id"]]["description"]
         score = score_pair(model, resume_text, job_descr)
         scored_jobs.append({"job_id": job["job_id"], "final_score": score})
 
     reranked_jobs = sorted(scored_jobs, key=lambda x: x["final_score"], reverse=True)
-    return reranked_jobs
+    top_n = min(len(reranked_jobs), top_n)
+    return reranked_jobs[:top_n]

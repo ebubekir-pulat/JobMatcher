@@ -1,9 +1,8 @@
 from src.embedding import build_index
 from src.retrieval import search
 from src.ranking import rerank
+from src import config
 import json
-import config
-
 
 """
 Initialisation
@@ -32,8 +31,12 @@ Retrieve top-K jobs using FAISS
 Rerank those jobs using cross-encoder
 Return top-N results
 """
+
+top_k = 10
+top_n = 5
+
 while True:
     resume = input("Enter a Resume: ")
-    recommended_jobs = search.retrieve_jobs(resume, 10, emb_model, faiss_index, mapping)
-    reranked_jobs = rerank.rerank_jobs(resume, recommended_jobs, job_cache, cross_encoder)
+    recommended_jobs = search.retrieve_jobs(resume, top_k, emb_model, faiss_index, mapping)
+    reranked_jobs = rerank.rerank_jobs(resume, recommended_jobs, job_cache, cross_encoder, top_n)
     print(reranked_jobs, end="\n\n")
