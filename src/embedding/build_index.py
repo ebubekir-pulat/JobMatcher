@@ -47,10 +47,10 @@ def build_faiss_index(embeddings: np.ndarray):
     
     # Init Index
     index = faiss.IndexFlatL2(dim) # IndexFlatL2 == Eucliedan distance
-    print(index.is_trained) # Should return False, because IndexFlatL2 does not need training
+    print("Index Doesn't Need Training: ", index.is_trained) # Should return True, because IndexFlatL2 does not need training
 
     index.add(embeddings)
-    print(index.ntotal) # Should print out number of embeddings
+    print("Number of Embeddings: ", index.ntotal) # Should print out number of embeddings
 
     return index
 
@@ -61,11 +61,11 @@ def save_mapping(job_ids: list, path: str):
     with open(path, "wb") as f:
         pickle.dump(job_ids, f)
 
-def main():
+if __name__ == "__main__":
     job_ids, descriptions = load_jobs(config.DB_PATH)
     model = load_embedding_model()
     embeddings = encode_jobs(model, descriptions)
     index = build_faiss_index(embeddings)
 
-    save_index(index, config.INDEX_PATH)
+    save_index(index, str(config.INDEX_PATH))
     save_mapping(job_ids, config.MAPPING_PATH)
