@@ -12,7 +12,6 @@ def load_job_cache(path: str):
 
 def score_pair(model, resume_text, job_description):
     score = model.predict([(resume_text, job_description)])
-    print("Pair Score: ", score)
     return score[0]
 
 def rerank_jobs(resume_text: str, recommended_jobs, job_cache, model, top_n):

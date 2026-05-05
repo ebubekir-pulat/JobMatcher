@@ -11,7 +11,7 @@ def load_mapping(path: str):
 
 def encode_resume(model, text: str):
     res_emb = model.encode([text])
-    return res_emb.reshape(1, -1).astype("float32")
+    return res_emb.astype("float32")
 
 def retrieve_jobs(resume_text: str, top_k: int, model, index, mapping):
     top_k = min(top_k, index.ntotal)
