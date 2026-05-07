@@ -35,8 +35,16 @@ Return top-N results
 top_k = 10
 top_n = 5
 
+show_descr = int(input("Do You Want The Descriptions of the Recommended Jobs Printed Out? 0 for No, 1 For Yes: "))
+
 while True:
     resume = input("Enter a Resume: ")
     recommended_jobs = search.retrieve_jobs(resume, top_k, emb_model, faiss_index, mapping)
     reranked_jobs = rerank.rerank_jobs(resume, recommended_jobs, job_cache, cross_encoder, top_n)
     print("\n\nReranked Jobs: ", reranked_jobs, end="\n\n")
+    
+    if show_descr == 1:
+        print("Descriptions:")
+        for job in reranked_jobs:
+            job_id = job["job_id"]
+            print(f"JOB ID {job_id}: {job_cache[job_id]["description"]}\n")
