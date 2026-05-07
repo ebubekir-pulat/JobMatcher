@@ -10,7 +10,7 @@ except:
     print("Error During Jobs Database Initialisation")
 
 jobs_ds_whole = load_dataset("datastax/linkedin_job_listings", split="train")
-dataset_size = 20
+dataset_size = 10000
 
 jobs_ds = jobs_ds_whole.select(range(dataset_size))
 jobs_ds = jobs_ds.select_columns(["job_id", "description"])
@@ -24,3 +24,4 @@ for job in jobs_ds:
     """, (job["job_id"], job["description"]))
 
 conn.commit()
+conn.close()

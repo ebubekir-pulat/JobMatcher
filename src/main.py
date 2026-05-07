@@ -47,4 +47,5 @@ while True:
         print("Descriptions:")
         for job in reranked_jobs:
             job_id = job["job_id"]
-            print(f"JOB ID {job_id}: {job_cache[job_id]["description"]}\n")
+            job_descr = job_cache[job_id]["description"]
+            print(f"JOB ID {job_id}: {job_descr}\n")

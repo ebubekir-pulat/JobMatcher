@@ -68,4 +68,4 @@ if __name__ == "__main__":
     index = build_faiss_index(embeddings)
 
     save_index(index, str(config.INDEX_PATH))
-    save_mapping(job_ids, config.MAPPING_PATH)
+    save_mapping(job_ids, str(config.MAPPING_PATH))
