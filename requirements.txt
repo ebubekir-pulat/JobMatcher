@@ -1,7 +1,5 @@
 numpy
-json
 db-sqlite3
-pickle
 faiss-cpu
 datasets
 sentence-transformers

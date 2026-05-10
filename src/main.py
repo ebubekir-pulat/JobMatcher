@@ -17,19 +17,19 @@ Note: Ensure src/embedding/build_index.py and data/db.py have already been run.
 
 emb_model = build_index.load_embedding_model()
 faiss_index = search.load_index(str(config.INDEX_PATH))
-mapping = search.load_mapping(config.MAPPING_PATH)
+mapping = search.load_mapping(str(config.MAPPING_PATH))
 cross_encoder = rerank.load_cross_encoder()
 
 with open(config.CACHE_PATH, "r") as f:
     job_cache = json.load(f)
 
 """
-Per Query
-Get user resume
-Encode resume
-Retrieve top-K jobs using FAISS
-Rerank those jobs using cross-encoder
-Return top-N results
+Per Query:
+- Get user resume
+- Encode resume
+- Retrieve top-K jobs using FAISS
+- Rerank those top-K jobs using cross-encoder
+- Return and print top-N results
 """
 
 top_k = 10
