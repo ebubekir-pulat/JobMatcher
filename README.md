@@ -62,7 +62,6 @@ Final Ranked Jobs
 - Cross-encoder reranking
 - Precomputed job embeddings
 - JSON job cache
-- Modular pipeline structure
 
 ---
 
