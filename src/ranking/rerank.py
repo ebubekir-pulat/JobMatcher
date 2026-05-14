@@ -20,7 +20,7 @@ def rerank_jobs(resume_text: str, recommended_jobs, job_cache, model, top_n):
     for job in recommended_jobs:
         job_descr = job_cache[job["job_id"]]["description"]
         score = score_pair(model, resume_text, job_descr)
-        scored_jobs.append({"job_id": job["job_id"], "final_score": score})
+        scored_jobs.append({"job_id": job["job_id"], "final_score": float(score)})
 
     reranked_jobs = sorted(scored_jobs, key=lambda x: x["final_score"], reverse=True)
     top_n = min(len(reranked_jobs), top_n)

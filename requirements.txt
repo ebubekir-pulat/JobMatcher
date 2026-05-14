@@ -3,3 +3,4 @@ db-sqlite3
 faiss-cpu
 datasets
 sentence-transformers
+fastapi[standard]
